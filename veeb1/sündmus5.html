@@ -1,1 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Jooksuaja kalkulaator</title>
 
+    <script>
+      function arvutus(){
+        aeg = distants.valueAsNumber / kiirus.valueAsNumber;
+
+        tunnid = Math.floor(aeg);
+        minutid = Math.round((aeg - tunnid) * 60);
+
+        vastus.innerText = "Eeldatav jooksuaeg: " + tunnid + " tundi ja " + minutid + " minutit";
+      }
+    </script>
+  </head>
+
+  <body>
+
+    Mitu kilomeetrit jooksed? <br />
+    <input type="number" id="distants" />
+
+    <br /><br />
+
+    Mis on sinu keskmine kiirus km/h? <br />
+    <input type="number" id="kiirus" />
+
+    <br /><br />
+
+    <input type="button" value="arvuta" onclick="arvutus()" />
+
+    <span id="vastus">vastuse koht</span>
+
+  </body>
+</html>
