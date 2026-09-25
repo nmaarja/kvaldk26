@@ -23,7 +23,7 @@
   }
   function kuva(kohad){
 	for(let koht of kohad){
-	  L.marker([koht[0], koht[1]]).addTo(kaart);
+	  L.marker([koht[0], koht[1]]).addTo(kaart).bindPopup(koht[2]);
 	}
   }
 
