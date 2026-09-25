@@ -22,24 +22,26 @@
 		    ).then(d => d.json()).then(kuva);
   }
   
- function kuva(kohad){
+function kuva(kohad){
     var piirid = [];
 
     for(let koht of kohad){
-        L.marker([koht[0], koht[1]]).addTo(kaart).bindPopup(koht[2]);
+        L.marker([koht[0], koht[1]])
+          .addTo(kaart);
 
         piirid.push([koht[0], koht[1]]);
     }
 
-    // Leiame kõiki punkte ümbritseva ala
     var ala = L.latLngBounds(piirid);
 
-    // Lisame helerohelise ristküliku
+    // Lisame ümber punktide natuke vaba ruumi
+    ala = ala.pad(0.1);
+
     L.rectangle(ala, {
-        color: "green",
+        color: "#90EE90",
         weight: 2,
-        fillColor: "lightgreen",
-        fillOpacity: 0.3
+        fillColor: "#90EE90",
+        fillOpacity: 0.25
     }).addTo(kaart);
 }
 
