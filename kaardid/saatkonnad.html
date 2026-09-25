@@ -26,8 +26,7 @@ function kuva(kohad){
     var piirid = [];
 
     for(let koht of kohad){
-        L.marker([koht[0], koht[1]])
-          .addTo(kaart);
+        L.marker([koht[0], koht[1]]).addTo(kaart).bindPopup(koht[2]); // asukohale vajutades tuleb info
 
         piirid.push([koht[0], koht[1]]);
     }
