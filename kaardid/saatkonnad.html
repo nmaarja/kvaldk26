@@ -24,43 +24,30 @@
   
 function kuva(kohad){
     var piirid = [];
+    var punktid = [];
 
     for(let koht of kohad){
-        L.marker([koht[0], koht[1]]).addTo(kaart).bindPopup(koht[2]); // asukohale vajutades tuleb info
+        L.marker([koht[0], koht[1]])
+          .addTo(kaart)
+          .bindPopup(koht[2]); // asukohale vajutades tuleb info
 
         piirid.push([koht[0], koht[1]]);
+        punktid.push([koht[0], koht[1]]);
     }
 
-    var ala = L.latLngBounds(piirid); // Leiab kõikide punktide põhjal kõige suurema ala, mis mahutab kõik punktid sisse.
+    var ala = L.latLngBounds(piirid);
 
-    ala = ala.pad(0.1); // lisab ristküliku igale küljele 10% vaba ruumi.
+    ala = ala.pad(0.1);
 
     L.rectangle(ala, {
         color: "#90EE90",
         weight: 2,
         fillColor: "#90EE90",
-        fillOpacity: 0.25 // ristküliku läbipaistvus
+        fillOpacity: 0.25
     }).addTo(kaart);
-
-	
-	var punktid = []; // joon kõikide asukohtade vahel
-
-    for(let koht of kohad){
-        L.marker([koht[0], koht[1]])
-          .addTo(kaart);
-
-        punktid.push([koht[0], koht[1]]);
-    }
 
     L.polyline(punktid, {
         color: "blue",
         weight: 3
     }).addTo(kaart);
 }
-
-  </script>
- </head>  
- <body onload="algus()">
-  <div id="kaardikiht"></div>
- </body>
-</html>
