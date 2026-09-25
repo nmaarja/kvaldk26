@@ -42,6 +42,8 @@ function kuva(kohad){
         fillColor: "#90EE90",
         fillOpacity: 0.25 // ristküliku läbipaistvus
     }).addTo(kaart);
+
+	
 	var punktid = []; // joon kõikide asukohtade vahel
 
     for(let koht of kohad){
@@ -52,7 +54,7 @@ function kuva(kohad){
     }
 
     L.polyline(punktid, {
-        color: "green",
+        color: "blue",
         weight: 3
     }).addTo(kaart);
 }
