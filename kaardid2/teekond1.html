@@ -21,13 +21,25 @@
 
    	hypik=L.popup(); 
 	kaart.on("click", vajutus);
+	fetch("http://router.project-osrm.org/route/v1/driving/24.547321,59.428555;24.982024,59.468179?overview=full&geometries=geojson").then(d => d.json()).then(kuvaTee);
    }
+	function kuvaTee(andmed){
+		tee=andmed.routes[0];
+		console.log(tee["duration"], tee["distance"]);
+		console.log(tee["geometry"]);
+		L.geoJSON(tee.geometry).addTo(kaart);
+	
+	}
+	 
    function vajutus(e){
 	     hypik.setLatLng(e.latlng).
 		 setContent("Vajutasid "+e.latlng.toString()).openOn(kaart);
 
-     // http://router.project-osrm.org/route/v1/driving/13.388860,52.517037;13.397634,52.529407?overview=full&geometries=geojson
-   
+     // http://router.project-osrm.org/route/v1/driving/24.547321,59.428555;24.982024,59.468179?overview=full&geometries=geojson
+	// 59.428555, 24.547321
+ // 59.468179, 24.982024
+
+	   
    }
 
   </script>
