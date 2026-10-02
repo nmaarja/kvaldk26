@@ -21,7 +21,7 @@
 
    	hypik=L.popup(); 
 	kaart.on("click", vajutus);
-	fetch("http://router.project-osrm.org/route/v1/driving/24.7604,59.366464;24.888224,59.445726?overview=full&geometries=geojson").then(d => d.json()).then(kuvaTee);
+	fetch("https://router.project-osrm.org/route/v1/driving/24.7604,59.366464;24.888224,59.445726?overview=full&geometries=geojson").then(d => d.json()).then(kuvaTee);
    }
 	function kuvaTee(andmed){
 		tee=andmed.routes[0];
