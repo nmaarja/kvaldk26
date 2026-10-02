@@ -35,6 +35,7 @@
    }
   function liikumine(){
 	   selgitus.innerText=Math.round(marker1.getLatLng().distanceTo(marker2.getLatLng()))/1000+" m";
+	  grupp.clearLayers();
 	  L.polyline([marker1.getLatLng(), marker2.getLatLng()]).addTo(grupp);
    }
 	 
