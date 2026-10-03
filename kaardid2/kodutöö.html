@@ -34,6 +34,10 @@
  function kuva(andmed){
    console.log(andmed); 
  }
+	  for(let koht of kohad){
+        L.marker([koht[0], koht[1]])
+          .addTo(kaart)
+          .bindPopup(koht[2]);
 
  </script>
  </head>  
