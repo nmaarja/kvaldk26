@@ -19,7 +19,7 @@
 	  tms: true,
 
     }).addTo(kaart);
-	   	fetch("https://script.google.com/macros/s/AKfycbwFiGJQfB7xmyvOjbnzu3pE5mtuROwzXRoFqej7TslMvkBPTsMBw7Ubq6srW3zR_shLAw/exec?"+lisand).then(d => d.json()).then(kuva);
+	   	fetch("https://script.google.com/macros/s/AKfycbwFiGJQfB7xmyvOjbnzu3pE5mtuROwzXRoFqej7TslMvkBPTsMBw7Ubq6srW3zR_shLAw/exec").then(d => d.json()).then(kuva);
 	  
 
    	hypik=L.popup(); 
@@ -36,7 +36,9 @@
 
 function kuva(andmed){
 	 console.log(andmed);
-	 for(let koht of andmed){
+	 for(let i = 1; i < andmed.length; i++){
+
+    let koht = andmed[i];
        L.marker([koht[0], koht[1]]).addTo(kaart).bindPopup("<b>" + koht[2] + "</b><br>" + koht[3]);
  }
 }
