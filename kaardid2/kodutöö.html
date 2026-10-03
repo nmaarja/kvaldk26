@@ -17,9 +17,10 @@
       new L.TileLayer(  'https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{y}.png&ASUTUS=TLU&ERIALA=DIGIHUMANITAARIA', {
 	  attribution: "Map: <a  href='http://www.maaamet.ee/'>Maa-amet</a>",
 	  tms: true,
-	fetch("https://script.google.com/macros/s/AKfycbzCThcRXrngSY3emU0eckLiPBvTDKFMWkNApfmgp0XISOJ-MQ1maMYSabDbbjUsgZE_qg/exec?"+lisand).then(d => d.json()).then(kuva);
-	  
+
     }).addTo(kaart);
+	   	fetch("https://script.google.com/macros/s/AKfycbzCThcRXrngSY3emU0eckLiPBvTDKFMWkNApfmgp0XISOJ-MQ1maMYSabDbbjUsgZE_qg/exec?"+lisand).then(d => d.json()).then(kuva);
+	  
 
    	hypik=L.popup(); 
 	kaart.on("click", vajutus);
@@ -34,7 +35,9 @@
    }
 
 function kuva(andmed){
-	 console.log(andmed); 
+	 console.log(andmed);
+	 for(let koht of andmed){
+       L.marker([koht[0], koht[1]]).addTo(kaart).bindPopup("<b>" + koht[2] + "</b><br>" + koht[3]);
  }
 
  </script>
