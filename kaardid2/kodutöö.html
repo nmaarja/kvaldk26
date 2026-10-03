@@ -30,10 +30,21 @@
      fetch("https://script.google.com/macros/s/AKfycbzCThcRXrngSY3emU0eckLiPBvTDKFMWkNApfmgp0XISOJ-MQ1maMYSabDbbjUsgZE_qg/exec?"+lisand).then(d => d.json()).then(kuva);
 	   
    }
+function kuva(kohad){
+    var punktid = [];
 
- function kuva(andmed){
-   console.log(andmed); 
- }
+    for(let koht of kohad){
+        L.marker([koht[0], koht[1]])
+          .addTo(kaart)
+          .bindPopup(koht[2]); // asukohale vajutades tuleb info
+
+        punktid.push([koht[0], koht[1]]);
+    }
+
+	 
+ //function kuva(andmed){
+  // console.log(andmed); 
+ //}
 
  </script>
  </head>  
