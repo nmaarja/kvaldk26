@@ -13,14 +13,15 @@
    var kaart;
    var hypik;
 	var tabeliKohad = [];
-	var jooned = [];
+	var grupp;
    function algus(){
     kaart = L.map('kaardikiht').setView([59.439, 24.773], 12);
 	hypik = L.marker([59.439, 24.773]);
     new L.TileLayer('https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{y}.png&ASUTUS=TLU&ERIALA=DIGIHUMANITAARIA',
       {attribution: "Map: <a href='http://www.maaamet.ee/'>Maa-amet</a>",
-        tms: true,
-      }).addTo(kaart);
+        tms: true,}).addTo(kaart);
+	grupp = L.layerGroup();
+	grupp.addTo(kaart);
 
     kaart.on("click", vajutus);
 	fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec").then(d => d.json()).then(kuva);
@@ -41,44 +42,34 @@
 	  
 function vajutus(e){
 
-  // Paneme kasutaja valitud markeri kaardile
+  // Kasutaja valitud punkt
   hypik
     .setLatLng(e.latlng)
     .addTo(kaart);
-	
-// Kustutame vanad jooned
-for(let joon of jooned){
-    kaart.removeLayer(joon);
-}
 
-jooned = [];
+  // Eemaldame eelmise vajutuse jooned
+  grupp.clearLayers();
 
+  // Näitame joont kasutaja punktist iga tabelis oleva kohani
+  for(let koht of tabeliKohad){
 
-// Teeme joone kasutaja valitud kohast iga tabelis oleva kohani
-for(let koht of tabeliKohad){
+    L.polyline([
+      e.latlng,
+      [koht[0], koht[1]]
+    ]).addTo(grupp);
 
-    let joon = L.polyline([
-        e.latlng,
-        [koht[0], koht[1]]
-    ]).addTo(kaart);
+  }
 
-    jooned.push(joon);
-}
-  // Paneme koordinaadid muutujatesse
-  let laiuskraad = e.latlng.lat;
-  let pikkuskraad = e.latlng.lng;
-
-  // popup tekst
+  // Arvutame kaugused
   let tekst =
     "Sinu valitud koht:" +
-    "<br>Laiuskraad: " + laiuskraad +
-    "<br>Pikkuskraad: " + pikkuskraad +
+    "<br>Laiuskraad: " + e.latlng.lat +
+    "<br>Pikkuskraad: " + e.latlng.lng +
     "<br><br>";
 
-  // Arvutame kauguse iga tabelis oleva kohani
   for(let koht of tabeliKohad){
-    let kaugus = kaart.distance(
-      e.latlng,
+
+    let kaugus = e.latlng.distanceTo(
       L.latLng(koht[0], koht[1])
     );
 
@@ -87,18 +78,17 @@ for(let koht of tabeliKohad){
       Math.round(kaugus) + " m<br>";
   }
 
-  // Tulemused
   hypik
     .bindPopup(tekst)
     .openPopup();
 
-  // Andmed Sheetsi
+  // Andmete saatmine Google Sheetsi
   let lisand =
-    "laiuskraad=" + laiuskraad +
-    "&pikkuskraad=" + pikkuskraad +
+    "laiuskraad=" + e.latlng.lat +
+    "&pikkuskraad=" + e.latlng.lng +
     "&tyyp=" + tyybivalik.value +
     "&kommentaar=" + encodeURI(kast1.value);
-  console.log(lisand);
+
   fetch(
     "https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand
   );
