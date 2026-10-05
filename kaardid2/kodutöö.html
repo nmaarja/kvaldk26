@@ -4,6 +4,7 @@
  <title>Kaart</title>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" />
+
  <style>
    body {padding: 0; margin: 0; }
    html, body { height: 100%; width: 100%;}
@@ -26,6 +27,11 @@
       }
     ).addTo(kaart);
 
+
+    // KAARDILE VAJUTAMINE
+    kaart.on("click", vajutus);
+
+
     fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec")
       .then(d => d.json())
       .then(kuva);
@@ -41,6 +47,37 @@
           .bindPopup(koht[2]);
 
     }
+
+  }
+
+
+  // SEE FUNKTSIOON KÄIVITUB, KUI KAARDILE VAJUTAD
+  function vajutus(e){
+
+    // Näitame vajutatud koha koordinaate
+    L.popup()
+      .setLatLng(e.latlng)
+      .setContent(
+        "Laiuskraad: " + e.latlng.lat +
+        "<br>Pikkuskraad: " + e.latlng.lng
+      )
+      .openOn(kaart);
+
+
+    // Paneme koordinaadid muutujatesse
+    let laiuskraad = e.latlng.lat;
+    let pikkuskraad = e.latlng.lng;
+
+
+    // Saadame koordinaadid Google Sheetsi
+    let lisand =
+      "laiuskraad=" + laiuskraad +
+      "&pikkuskraad=" + pikkuskraad;
+
+
+    fetch(
+      "https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand
+    );
 
   }
 
