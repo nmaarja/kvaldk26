@@ -4,82 +4,62 @@
  <title>Kaart</title>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" />
-
  <style>
    body {padding: 0; margin: 0; }
    html, body { height: 100%; width: 100%;}
    #kaardikiht {float:bottom; width:100%; height:100%;}
  </style>
-
  <script>
    var kaart;
    var hypik;
-
    function algus(){
-
     kaart = L.map('kaardikiht').setView([59.439, 24.773], 12);
-
-    new L.TileLayer(
-      'https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{y}.png&ASUTUS=TLU&ERIALA=DIGIHUMANITAARIA',
-      {
-        attribution: "Map: <a href='http://www.maaamet.ee/'>Maa-amet</a>",
+    new L.TileLayer('https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{y}.png&ASUTUS=TLU&ERIALA=DIGIHUMANITAARIA',
+      {attribution: "Map: <a href='http://www.maaamet.ee/'>Maa-amet</a>",
         tms: true,
-      }
-    ).addTo(kaart);
+      }).addTo(kaart);
 
-
-    // KAARDILE VAJUTAMINE
     kaart.on("click", vajutus);
 
-
-    fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec")
-      .then(d => d.json())
-      .then(kuva);
+    fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec").then(d => d.json()).then(kuva);
   }
 
 
   function kuva(kohad){
 
     for(let koht of kohad){
-
         L.marker([koht[0], koht[1]])
           .addTo(kaart)
           .bindPopup(koht[2]);
-
     }
-
   }
-
-
+function vajutus(e){
+	     hypik.setLatLng(e.latlng).
+		 setContent("Vajutasid "+e.latlng.toString()).openOn(kaart);
+   }
   // SEE FUNKTSIOON KÄIVITUB, KUI KAARDILE VAJUTAD
-  function vajutus(e){
+// function vajutus(e){
 
-    // Näitame vajutatud koha koordinaate
-    L.popup()
-      .setLatLng(e.latlng)
-      .setContent(
-        "Laiuskraad: " + e.latlng.lat +
-        "<br>Pikkuskraad: " + e.latlng.lng
-      )
-      .openOn(kaart);
-
+  //  L.popup().setLatLng(e.latlng)
+//     .setContent(
+  //      "Laiuskraad: " + e.latlng.lat +
+    //    "<br>Pikkuskraad: " + e.latlng.lng
+//      )
+  //    .openOn(kaart);
 
     // Paneme koordinaadid muutujatesse
-    let laiuskraad = e.latlng.lat;
-    let pikkuskraad = e.latlng.lng;
-
+ //   let laiuskraad = e.latlng.lat;
+//    let pikkuskraad = e.latlng.lng;
 
     // Saadame koordinaadid Google Sheetsi
-    let lisand =
-      "laiuskraad=" + laiuskraad +
-      "&pikkuskraad=" + pikkuskraad;
+//    let lisand =
+  //    "laiuskraad=" + laiuskraad +
+ //     "&pikkuskraad=" + pikkuskraad;
 
 
-    fetch(
-      "https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand
-    );
+  //  fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand  );
 
-  }
+//  }
 
  </script>
 </head>
