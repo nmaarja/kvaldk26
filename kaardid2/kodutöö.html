@@ -13,6 +13,7 @@
    var kaart;
    var hypik;
 	var tabeliKohad = [];
+	var jooned = [];
    function algus(){
     kaart = L.map('kaardikiht').setView([59.439, 24.773], 12);
 	hypik = L.marker([59.439, 24.773]);
@@ -44,24 +45,38 @@ function vajutus(e){
   hypik
     .setLatLng(e.latlng)
     .addTo(kaart);
+	
+// Kustutame vanad jooned
+for(let joon of jooned){
+    kaart.removeLayer(joon);
+}
+
+jooned = [];
 
 
+// Teeme joone kasutaja valitud kohast iga tabelis oleva kohani
+for(let koht of tabeliKohad){
+
+    let joon = L.polyline([
+        e.latlng,
+        [koht[0], koht[1]]
+    ]).addTo(kaart);
+
+    jooned.push(joon);
+}
   // Paneme koordinaadid muutujatesse
   let laiuskraad = e.latlng.lat;
   let pikkuskraad = e.latlng.lng;
 
-
-  // Alustame popupi tekstiga
+  // popup tekst
   let tekst =
     "Sinu valitud koht:" +
     "<br>Laiuskraad: " + laiuskraad +
     "<br>Pikkuskraad: " + pikkuskraad +
     "<br><br>";
 
-
   // Arvutame kauguse iga tabelis oleva kohani
   for(let koht of tabeliKohad){
-
     let kaugus = kaart.distance(
       e.latlng,
       L.latLng(koht[0], koht[1])
@@ -70,29 +85,23 @@ function vajutus(e){
     tekst = tekst +
       "<b>" + koht[2] + "</b>: " +
       Math.round(kaugus) + " m<br>";
-
   }
 
-
-  // Näitame tulemusi
+  // Tulemused
   hypik
     .bindPopup(tekst)
     .openPopup();
 
-
-  // Saadame andmed Google Sheetsi
+  // Andmed Sheetsi
   let lisand =
     "laiuskraad=" + laiuskraad +
     "&pikkuskraad=" + pikkuskraad +
     "&tyyp=" + tyybivalik.value +
     "&kommentaar=" + encodeURI(kast1.value);
-
   console.log(lisand);
-
   fetch(
     "https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand
   );
-
 }
 
  </script>
