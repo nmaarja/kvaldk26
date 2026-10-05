@@ -15,7 +15,7 @@
    var hypik;
    function algus(){
     kaart = L.map('kaardikiht').setView([59.439, 24.773], 12);
-	hypik = L.marker([59.439, 24.773]).addTo(kaart);
+	hypik = L.marker([59.439, 24.773]);
     new L.TileLayer('https://tiles.maaamet.ee/tm/tms/1.0.0/hybriid@GMC/{z}/{x}/{y}.png&ASUTUS=TLU&ERIALA=DIGIHUMANITAARIA',
       {attribution: "Map: <a href='http://www.maaamet.ee/'>Maa-amet</a>",
         tms: true,
