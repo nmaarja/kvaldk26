@@ -33,15 +33,13 @@
           .addTo(kaart)
           .bindPopup(koht[2]);
     }
-  }
   function vajutus(e){
 	     hypik.setLatLng(e.latlng).
 		 setContent("Vajutasid "+e.latlng.toString()).openOn(kaart);
-	     let lisand="laiuskraad="+e.latlng.lat+"&pikkuskraad="+e.latlng.lng+"&tyyp="+tyybivalik.value+"&kommentaar="+encodeURI(kast1.value);
-	     console.log(lisand);
+	   let lisand="laiuskraad="+e.latlng.lat+"&pikkuskraad="+e.latlng.lng;
      fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?"+lisand)
-	   
    }
+	  
   // SEE FUNKTSIOON KÄIVITUB, KUI KAARDILE VAJUTAD
 // function vajutus(e){
 
