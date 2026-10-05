@@ -21,11 +21,37 @@
       }).addTo(kaart);
 
     kaart.on("click", vajutus);
+	fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec").then(d => d.json()).then(kuva);
+  	marker1=L.marker([59.439, 24.773], {draggable: true});
+    marker2=L.marker([59.439, 24.773], {draggable: true});
+	grupp=L.layerGroup();
+	grupp.addTo(kaart);
+    marker1.addTo(kaart);
+    marker2.addTo(kaart);
+    marker1.on("dragend", liikumine);
+    marker2.on("dragend", liikumine);
+   	hypik=L.popup(); 
+	kaart.on("click", vajutus);
+   }
+function liikumine(){
+	   selgitus.innerText=Math.round(marker1.getLatLng().distanceTo(marker2.getLatLng()))/1000+" km";
+	   grupp.clearLayers();
+     let koht1=marker1.getLatLng();
+     let koht2=marker2.getLatLng();
+	   L.polyline([koht1, koht2]).addTo(grupp);
+     let aadress="https://router.project-osrm.org/route/v1/driving/"+koht1.lng+","+
+               koht1.lat+";"+koht2.lng+","+koht2.lat+"?overview=full&geometries=geojson"
+     console.log(aadress);
+     fetch(aadress).then(d => d.json()).then(kuvaTee)
+   }
 
-    fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec").then(d => d.json()).then(kuva);
-  }
-
-
+	 function kuvaTee(andmed){
+		tee=andmed.routes[0];
+		console.log(tee["duration"], tee["distance"]);
+		console.log(tee["geometry"]);
+		L.geoJSON(tee.geometry).addTo(grupp);
+//    https://router.project-osrm.org/route/v1/driving/24.55307,59.428316;24.987373,59.457465?overview=full&geometries=geojson
+	}
   function kuva(kohad){
 
     for(let koht of kohad){
@@ -67,7 +93,7 @@ let lisand="laiuskraad="+e.latlng.lat+"&pikkuskraad="+e.latlng.lng+"&tyyp="+tyyb
 	  <input type="text" id="kast1" />
   </div>
 
-	
+ <div id="selgitus">selgituse koht</div>
 <div id="kaardikiht"></div>
 
 </body>
