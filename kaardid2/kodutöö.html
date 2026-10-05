@@ -18,29 +18,39 @@
 	  attribution: "Map: <a  href='http://www.maaamet.ee/'>Maa-amet</a>",
 	  tms: true,
     }).addTo(kaart);
-	  fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec").then(d => d.json()).then(kuva);
+	  fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec"
+		    ).then(d => d.json()).then(kuva);
   }
   
 function kuva(kohad){
+    var piirid = [];
     var punktid = [];
 
     for(let koht of kohad){
         L.marker([koht[0], koht[1]])
           .addTo(kaart)
-          .bindPopup(koht[2]);
+          .bindPopup(koht[2]); // asukohale vajutades tuleb info
 
+        piirid.push([koht[0], koht[1]]);
         punktid.push([koht[0], koht[1]]);
     }
+
+    var ala = L.latLngBounds(piirid);
+
+    ala = ala.pad(0.1);
+
+    L.rectangle(ala, {
+        color: "#90EE90",
+        weight: 2,
+        fillColor: "#90EE90",
+        fillOpacity: 0.25
+    }).addTo(kaart);
+
+    L.polyline(punktid, {
+        color: "blue",
+        weight: 3
+    }).addTo(kaart);
 }
-
-function vajutus(e){
-	     hypik.setLatLng(e.latlng).
-		 setContent("Vajutasid "+e.latlng.toString()).openOn(kaart).openPopup();
-	   let lisand="laiuskraad="+e.latlng.lat+"&pikkuskraad="+e.latlng.lng;
-     fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?"+lisand)
-   }
-
-	 
 </script>
 </head>
 
