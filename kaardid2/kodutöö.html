@@ -12,6 +12,7 @@
  <script>
    var kaart;
    var hypik;
+	var tabeliKohad = [];
    function algus(){
     kaart = L.map('kaardikiht').setView([59.439, 24.773], 12);
 	hypik = L.marker([59.439, 24.773]);
@@ -22,63 +23,77 @@
 
     kaart.on("click", vajutus);
 	fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec").then(d => d.json()).then(kuva);
-  	marker1=L.marker([59.439, 24.773], {draggable: true});
-    marker2=L.marker([59.439, 24.773], {draggable: true});
-	grupp=L.layerGroup();
-	grupp.addTo(kaart);
-    marker1.addTo(kaart);
-    marker2.addTo(kaart);
-    marker1.on("dragend", liikumine);
-    marker2.on("dragend", liikumine);
-   	hypik=L.popup(); 
-	kaart.on("click", vajutus);
+  	
    }
-function liikumine(){
-	   selgitus.innerText=Math.round(marker1.getLatLng().distanceTo(marker2.getLatLng()))/1000+" km";
-	   grupp.clearLayers();
-     let koht1=marker1.getLatLng();
-     let koht2=marker2.getLatLng();
-	   L.polyline([koht1, koht2]).addTo(grupp);
-     let aadress="https://router.project-osrm.org/route/v1/driving/"+koht1.lng+","+
-               koht1.lat+";"+koht2.lng+","+koht2.lat+"?overview=full&geometries=geojson"
-     console.log(aadress);
-     fetch(aadress).then(d => d.json()).then(kuvaTee)
-   }
-
-	 function kuvaTee(andmed){
-		tee=andmed.routes[0];
-		console.log(tee["duration"], tee["distance"]);
-		console.log(tee["geometry"]);
-		L.geoJSON(tee.geometry).addTo(grupp);
-//    https://router.project-osrm.org/route/v1/driving/24.55307,59.428316;24.987373,59.457465?overview=full&geometries=geojson
-	}
+	 
   function kuva(kohad){
+
+    // Salvestame tabelis olevad kohad muutujasse
+    tabeliKohad = kohad;
 
     for(let koht of kohad){
         L.marker([koht[0], koht[1]])
           .addTo(kaart)
           .bindPopup(koht[2]);
     }
-  }
- 
+}
 	  
 function vajutus(e){
 
-L.popup().setLatLng(e.latlng).setContent(
-   "Laiuskraad: " + e.latlng.lat +
-  "<br>Pikkuskraad: " + e.latlng.lng
-).openOn(kaart);
+  // Paneme kasutaja valitud markeri kaardile
+  hypik
+    .setLatLng(e.latlng)
+    .addTo(kaart);
 
-    // Paneme koordinaadid muutujatesse
- let laiuskraad = e.latlng.lat;
- let pikkuskraad = e.latlng.lng;
 
-    // Saadame koordinaadid Google Sheetsi
-let lisand="laiuskraad="+e.latlng.lat+"&pikkuskraad="+e.latlng.lng+"&tyyp="+tyybivalik.value+"&kommentaar="+encodeURI(kast1.value);
-	     console.log(lisand);
-	
-  fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand  );
- }
+  // Paneme koordinaadid muutujatesse
+  let laiuskraad = e.latlng.lat;
+  let pikkuskraad = e.latlng.lng;
+
+
+  // Alustame popupi tekstiga
+  let tekst =
+    "Sinu valitud koht:" +
+    "<br>Laiuskraad: " + laiuskraad +
+    "<br>Pikkuskraad: " + pikkuskraad +
+    "<br><br>";
+
+
+  // Arvutame kauguse iga tabelis oleva kohani
+  for(let koht of tabeliKohad){
+
+    let kaugus = kaart.distance(
+      e.latlng,
+      L.latLng(koht[0], koht[1])
+    );
+
+    tekst = tekst +
+      "<b>" + koht[2] + "</b>: " +
+      Math.round(kaugus) + " m<br>";
+
+  }
+
+
+  // Näitame tulemusi
+  hypik
+    .bindPopup(tekst)
+    .openPopup();
+
+
+  // Saadame andmed Google Sheetsi
+  let lisand =
+    "laiuskraad=" + laiuskraad +
+    "&pikkuskraad=" + pikkuskraad +
+    "&tyyp=" + tyybivalik.value +
+    "&kommentaar=" + encodeURI(kast1.value);
+
+  console.log(lisand);
+
+  fetch(
+    "https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand
+  );
+
+}
 
  </script>
 </head>
@@ -93,7 +108,6 @@ let lisand="laiuskraad="+e.latlng.lat+"&pikkuskraad="+e.latlng.lng+"&tyyp="+tyyb
 	  <input type="text" id="kast1" />
   </div>
 
- <div id="selgitus">selgituse koht</div>
 <div id="kaardikiht"></div>
 
 </body>
