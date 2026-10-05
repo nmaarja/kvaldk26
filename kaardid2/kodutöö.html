@@ -49,9 +49,8 @@ L.popup().setLatLng(e.latlng).setContent(
  let pikkuskraad = e.latlng.lng;
 
     // Saadame koordinaadid Google Sheetsi
-let lisand =
- "laiuskraad=" + laiuskraad +
- "&pikkuskraad=" + pikkuskraad;
+let lisand="laiuskraad="+e.latlng.lat+"&pikkuskraad="+e.latlng.lng+"&tyyp="+tyybivalik.value+"&kommentaar="+encodeURI(kast1.value);
+	     console.log(lisand);
 	
   fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand  );
  }
