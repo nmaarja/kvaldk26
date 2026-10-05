@@ -30,37 +30,28 @@
 	 
   function kuva(kohad){
 
-    // Salvestame tabelis olevad kohad muutujasse
+// tabelis olevad asukohad kaardile
     tabeliKohad = kohad;
 
     for(let koht of kohad){
-        L.marker([koht[0], koht[1]])
-          .addTo(kaart)
-          .bindPopup(koht[2]);
+        L.marker([koht[0], koht[1]]).addTo(kaart).bindPopup(koht[2]); // võtab tabelist asukohad, paneb kaardile ja lisab popup
     }
 }
 	  
 function vajutus(e){
 
-  // Kasutaja valitud punkt
-  hypik
-    .setLatLng(e.latlng)
-    .addTo(kaart);
+  // Valitud punkt
+  hypik.setLatLng(e.latlng).addTo(kaart);
 
-  // Eemaldame eelmise vajutuse jooned
+  // kustutab eelmise vajutuse jooned
   grupp.clearLayers();
 
-  // Näitame joont kasutaja punktist iga tabelis oleva kohani
+  // joon vajutatud kohast iga tabelis oleva kohani
   for(let koht of tabeliKohad){
-
-    L.polyline([
-      e.latlng,
-      [koht[0], koht[1]]
-    ]).addTo(grupp);
-
+    L.polyline([e.latlng, [koht[0], koht[1]]]).addTo(grupp);
   }
 
-  // Arvutame kaugused
+  // Kaugused
   let tekst =
     "Sinu valitud koht:" +
     "<br>Laiuskraad: " + e.latlng.lat +
@@ -69,29 +60,20 @@ function vajutus(e){
 
   for(let koht of tabeliKohad){
 
-    let kaugus = e.latlng.distanceTo(
-      L.latLng(koht[0], koht[1])
-    );
+    let kaugus = e.latlng.distanceTo(L.latLng(koht[0], koht[1]));
 
-    tekst = tekst +
-      "<b>" + koht[2] + "</b>: " +
-      Math.round(kaugus) + " m<br>";
+    tekst = tekst + "<b>" + koht[2] + "</b>: " + Math.round(kaugus) + " m<br>";
   }
 
-  hypik
-    .bindPopup(tekst)
-    .openPopup();
+  hypik.bindPopup(tekst).openPopup();
 
-  // Andmete saatmine Google Sheetsi
+  // Andmed Sheetsi
   let lisand =
     "laiuskraad=" + e.latlng.lat +
     "&pikkuskraad=" + e.latlng.lng +
     "&tyyp=" + tyybivalik.value +
     "&kommentaar=" + encodeURI(kast1.value);
-
-  fetch(
-    "https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand
-  );
+  fetch("https://script.google.com/macros/s/AKfycbxp-TobJITs3Eehm8eJq5dj4DWbR7G_0jpgKEktHYYjgoXUrMyeVbtApr6wR2yHLV5h/exec?" + lisand);
 }
 
  </script>
