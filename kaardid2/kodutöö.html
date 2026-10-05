@@ -59,7 +59,7 @@ function vajutus(e){
     "<br><br>";
 
   for(let koht of tabeliKohad){
-
+// kaugus läheks popupi
     let kaugus = e.latlng.distanceTo(L.latLng(koht[0], koht[1]));
 
     tekst = tekst + "<b>" + koht[2] + "</b>: " + Math.round(kaugus) + " m<br>";
