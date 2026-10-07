@@ -20,11 +20,10 @@
            fetch(aadress).then(d => d.json()).then(kuva);
         }
         function kuva(d){
-           console.log(d);
-          for(let rida of d["results"]["bindings"]){
-            console.log(rida["itemLabel"]["value"]);
-
-          }
+          console.log(d);
+           for(let rida of d["results"]["bindings"]){
+              console.log(rida["itemLabel"]["value"]);
+           }
         }
      </script>
   </head>
