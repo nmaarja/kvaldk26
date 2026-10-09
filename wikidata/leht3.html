@@ -42,7 +42,7 @@
        
   function kuva(d){
            console.log(d);
-            vastus.innerHTML="";
+            vastus.innerHTML=""; // kustutab eelmised ära ja näitab ainult seda, mis küsin
            for(let rida of d["results"]["bindings"]){
               console.log(rida["itemLabel"]["value"]);
               //vastus.textContent+=" "+rida["itemLabel"]["value"];
