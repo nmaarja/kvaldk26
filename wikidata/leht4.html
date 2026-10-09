@@ -10,7 +10,7 @@
               WHERE
               {
                 ?item wdt:P27 wd:${riik.value}. 
-                ?item wdt:P106 wd:Q177220.
+                ?item wdt:P106 wd:${amet.value}.
               
                 SERVICE wikibase:label {
                   bd:serviceParam wikibase:language "[AUTO_LANGUAGE],mul,en".
@@ -42,7 +42,7 @@
         <option value="Q183">Saksamaa</option>
         <option value="Q40">Austria</option>
       </select>
-    <select>
+    <select id="amet" onchange="kysi()">
     <option value="Q2066131">Sportlane</option>
     <option value="Q33999">Näitleja</option>
     <option value="Q36180">Kirjanik</option>
