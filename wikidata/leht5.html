@@ -33,13 +33,13 @@
            for(let rida of d["results"]["bindings"]){
               console.log(rida["koolLabel"]["value"]);
               let lause=document.createElement("li");
-              lause.textContent=rida["itemLabel"]["value"];
+              lause.textContent=rida["koolLabel"]["value"];
               vastus.appendChild(lause);
            }
         }
      </script>
   </head>
-  <body>
+ <body>
       <select id="riik" onchange="kysi()">
         <option value="Q33">Soome</option>
         <option value="Q191">Eesti</option>
