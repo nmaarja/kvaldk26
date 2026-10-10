@@ -3,15 +3,12 @@
   <head>
      <script>
         function kysi(){ 
-           //Vaadake, milliseid ameteid (P106) on Wikidatas
-           //Võimaldage teisest rippmenüüst valida ametit
-           // (uuel lehel)
            let lause=`SELECT ?item ?itemLabel ?synnikohtLabel
             WHERE
               {
                 ?isik wdt:P27 wd:${riik.value}.
                 ?isik wdt:P106 wd:${amet.value}.
-                ?isik wdt:P69 ?synnikoht.
+                ?isik wdt:P19 ?synnikoht.
                 SERVICE wikibase:label {
                   bd:serviceParam wikibase:language "et,en".
                 } 
