@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+     <script>
+        function kysi(){ 
+           //Vaadake, milliseid ameteid (P106) on Wikidatas
+           //Võimaldage teisest rippmenüüst valida ametit
+           // (uuel lehel)
+           let lause=`SELECT ?item ?itemLabel ?synnikohtLabel
+            WHERE
+              {
+                ?isik wdt:P27 wd:${riik.value}.
+                ?isik wdt:P106 wd:${amet.value}.
+                ?isik wdt:P69 ?synnikoht.
+                SERVICE wikibase:label {
+                  bd:serviceParam wikibase:language "et,en".
+                } 
+              } 
+              LIMIT 15
+           `;
+           console.log(lause);
+           let aadress="https://query.wikidata.org/sparql?format=json&query="+encodeURI(lause);  
+           vastus.innerHTML="ootan vastust";
+           fetch(aadress).then(d => d.json()).then(kuva);
+        }
+
+
+       
+        function kuva(d){
+           console.log(d);
+           vastus.innerHTML="";
+           for(let rida of d["results"]["bindings"]){
+              console.log(rida["synnikohtLabel"]["value"]);
+              let lause=document.createElement("li");
+              lause.textContent=rida["synnikohtLabel"]["value"];
+              vastus.appendChild(lause);
+           }
+        }
+     </script>
+  </head>
+ <body>
+      <select id="riik" onchange="kysi()">
+        <option value="Q183">Saksamaa</option>
+        <option value="Q40">Austria</option>
+        <option value="Q39">Šveits</option>
+      </select>
+    <select id="amet" onchange="kysi()">
+    <option value="Q901">Teadlane</option>
+    <option value="Q36180">Kirjanik</option>
+      </select>
+     <input type="button" value="otsi" onclick="kysi()" />
+ 
+     <ul id="vastus"></ul>
+  </body>
+</html>
