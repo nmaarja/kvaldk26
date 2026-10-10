@@ -3,7 +3,7 @@
   <head>
      <script>
         function kysi(){ 
-           let lause=`SELECT ?item ?itemLabel ?synnikohtLabel
+           let lause=`SELECT ?isik ?isikLabel ?synnikohtLabel
             WHERE
               {
                 ?isik wdt:P27 wd:${riik.value}.
@@ -17,7 +17,7 @@
            `;
            console.log(lause);
            let aadress="https://query.wikidata.org/sparql?format=json&query="+encodeURI(lause);  
-           vastus.innerHTML="ootan vastust";
+           vastus.innerHTML="Ootan vastust...";
            fetch(aadress).then(d => d.json()).then(kuva);
         }
 
@@ -27,9 +27,9 @@
            console.log(d);
            vastus.innerHTML="";
            for(let rida of d["results"]["bindings"]){
-              console.log(rida["synnikohtLabel"]["value"]);
               let lause=document.createElement("li");
-              lause.textContent=rida["synnikohtLabel"]["value"];
+              lause.textContent =
+            rida["isikLabel"]["value"] + " – " + rida["synnikohtLabel"]["value"];
               vastus.appendChild(lause);
            }
         }
