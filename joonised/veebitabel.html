@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ilmaennustuse lumememmed veebitabeli põhjal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 25px;
+            background-color: #f7f9fa;
+            color: #333;
+        }
+        h1, h2 {
+            color: #1a365d;
+        }
+        .container {
+            max-width: 820px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 760px;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #d2d6dc;
+            padding: 10px 14px;
+            text-align: center;
+        }
+        th {
+            background-color: #ebf8ff;
+            color: #2b6cb0;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f0f4f8;
+        }
+        td[contenteditable="true"] {
+            background-color: #fffef0;
+            cursor: pointer;
+        }
+        td[contenteditable="true"]:focus {
+            background-color: #feffcf;
+            outline: 2px solid #3182ce;
+        }
+        canvas {
+            border: 1px solid #cbd5e0;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: block;
+        }
+        .juhis {
+            margin: 15px 0;
+            padding: 12px 16px;
+            background-color: #e6fffa;
+            border-left: 4px solid #319795;
+            color: #234e52;
+            font-size: 14px;
+        }
+        .nupp {
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        .nupp:hover {
+            background-color: #2b6cb0;
+        }
+    </style>
+    <script>
+        // Loeme ilmaandmed otse HTML veebitabelist
+        function loeTabelist() {
+            let read = document.querySelectorAll("#ilmatabel tbody tr");
+            let andmed = [];
+
+            read.forEach(rida => {
+                let lahtrid = rida.querySelectorAll("td");
+                if (lahtrid.length >= 4) {
+                    andmed.push({
+                        kuupaev: lahtrid[0].innerText.trim(),
+                        temp: parseFloat(lahtrid[1].innerText.trim()) || 0,
+                        tuul: parseFloat(lahtrid[2].innerText.trim()) || 0,
+                        puhang: parseFloat(lahtrid[3].innerText.trim()) || 0
+                    });
+                }
+            });
+
+            return andmed;
+        }
+
+        // Funktsioon lumememme joonistamiseks
+        // x, y          - alumise palli keskpunkti koordinaadid
+        // temperatuur   - määrab alumise palli suuruse
+        // tuulekiirus   - määrab keskmise palli suuruse
+        // puhangukiirus - määrab ülemise palli suuruse
+        // kuupaev       - tekst alumise palli keskel
+        function lumememm(x, y, temperatuur, tuulekiirus, puhangukiirus, kuupaev, g) {
+            let rAlumine = Math.max(10, temperatuur * 7);
+            let rKeskmine = Math.max(8, tuulekiirus * 3.5);
+            let rYlemine = Math.max(6, puhangukiirus * 1.2);
+
+            let y1 = y;
+            let y2 = y1 - rAlumine - rKeskmine;
+            let y3 = y2 - rKeskmine - rYlemine;
+
+            g.lineWidth = 2;
+            g.strokeStyle = "#2d3748";
+
+            // 1. Alumine kera
+            g.beginPath();
+            g.arc(x, y1, rAlumine, 0, 2 * Math.PI);
+            g.stroke();
+
+            // 2. Keskmine kera
+            g.beginPath();
+            g.arc(x, y2, rKeskmine, 0, 2 * Math.PI);
+            g.stroke();
+
+            // 3. Ülemine kera
+            g.beginPath();
+            g.arc(x, y3, rYlemine, 0, 2 * Math.PI);
+            g.stroke();
+
+            // 4. Kuupäev alumise kera keskel
+            g.font = "bold 13px sans-serif";
+            g.fillStyle = "#1a202c";
+            g.textAlign = "center";
+            g.textBaseline = "middle";
+            g.fillText(kuupaev, x, y1);
+
+            // Näitajad allpool
+            g.font = "12px sans-serif";
+            g.fillStyle = "#4a5568";
+            g.fillText(`${temperatuur}°C | ${tuulekiirus} (${puhangukiirus}) m/s`, x, y1 + rAlumine + 20);
+        }
+
+        // Põhifunktsioon joonistamiseks veebitabeli põhjal
+        function joonista() {
+            let tahvel = document.getElementById("tahvel");
+            let g = tahvel.getContext("2d");
+
+            // Puhastame lõuendi enne uut joonistamist
+            g.clearRect(0, 0, tahvel.width, tahvel.height);
+
+            // Andmete pärimine tabelist
+            let ilmaandmed = loeTabelist();
+
+            // Joonistame iga tabeli rea kohta lumememme
+            for (let i = 0; i < ilmaandmed.length; i++) {
+                let d = ilmaandmed[i];
+                let x = 110 + i * 180;
+                let y = 280;
+                lumememm(x, y, d.temp, d.tuul, d.puhang, d.kuupaev, g);
+            }
+        }
+    </script>
+</head>
+<body onload="joonista()">
+    <div class="container">
+        <h1>Ilmaennustus ja lumememmed</h1>
+
+        <h2>1. Ilmaandmete veebitabel</h2>
+        <div class="juhis">
+            Tabeli lahtrid on muudetavad (klõpsa ja muuda väärtust) – joonis uueneb automaatselt veebitabeli põhjal!
+        </div>
+
+        <table id="ilmatabel">
+            <thead>
+                <tr>
+                    <th>Kuupäev</th>
+                    <th>Temperatuur (°C)</th>
+                    <th>Tuulekiirus (m/s)</th>
+                    <th>Tuulepuhang (m/s)</th>
+                </tr>
+            </thead>
+            <tbody oninput="joonista()">
+                <tr>
+                    <td contenteditable="true">12.11</td>
+                    <td contenteditable="true">6</td>
+                    <td contenteditable="true">8</td>
+                    <td contenteditable="true">14</td>
+                </tr>
+                <tr>
+                    <td contenteditable="true">13.11</td>
+                    <td contenteditable="true">4</td>
+                    <td contenteditable="true">7</td>
+                    <td contenteditable="true">12</td>
+                </tr>
+                <tr>
+                    <td contenteditable="true">14.11</td>
+                    <td contenteditable="true">4</td>
+                    <td contenteditable="true">8</td>
+                    <td contenteditable="true">15</td>
+                </tr>
+                <tr>
+                    <td contenteditable="true">15.11</td>
+                    <td contenteditable="true">7</td>
+                    <td contenteditable="true">9</td>
+                    <td contenteditable="true">16</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button class="nupp" onclick="joonista()">Uuenda joonist tabelist</button>
+
+        <h2>2. Visualiseering Canvas-lõuendil</h2>
+        <canvas id="tahvel" width="760" height="380"></canvas>
+    </div>
+</body>
+</html>
