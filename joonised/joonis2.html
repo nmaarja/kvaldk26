@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+    <title>Joonis</title>
+    <script>
+        function joonista() {
+            let g = tahvel.getContext("2d");
+
+            g.lineWidth = 2;
+            g.strokeStyle = "black";
+
+            // MAJA
+            g.beginPath();
+            g.moveTo(80, 220);   // vasak alumine
+            g.lineTo(80, 120);   // vasak sein üles
+            g.lineTo(120, 70);   // katuse tipp
+            g.lineTo(160, 120);  // parem katuse külg
+            g.lineTo(160, 220);  // parem sein alla
+            g.lineTo(80, 220);   // põhi tagasi algusesse
+            g.stroke();
+
+            // Ukse kontuur
+            g.beginPath();
+            g.moveTo(115, 220);
+            g.lineTo(115, 170);
+            g.lineTo(135, 170);
+            g.lineTo(135, 220);
+            g.stroke();
+
+            // PINK
+            // iste
+            g.beginPath();
+            g.moveTo(250, 210);
+            g.lineTo(330, 210);
+            g.lineTo(330, 225);
+            g.lineTo(250, 225);
+            g.lineTo(250, 210);
+            g.stroke();
+
+            // vasak jalg
+            g.beginPath();
+            g.moveTo(265, 225);
+            g.lineTo(265, 255);
+            g.lineTo(280, 255);
+            g.lineTo(280, 225);
+            g.stroke();
+
+            // parem jalg
+            g.beginPath();
+            g.moveTo(300, 225);
+            g.lineTo(300, 255);
+            g.lineTo(315, 255);
+            g.lineTo(315, 225);
+            g.stroke();
+        }
+    </script>
+</head>
+<body onload="joonista()">
+    <h1>Joonistamine</h1>
+    <canvas id="tahvel" width="400" height="300"></canvas>
+</body>
+</html>
