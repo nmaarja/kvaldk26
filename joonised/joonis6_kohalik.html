@@ -58,9 +58,11 @@
 	    }
 	  }
 	  function uuendaAndmed(){
-		  fetch("ilmaandmed.json").then(d => d.json()).then(loe);
+		  fetch("ilmaandmed.json").then(d => d.text()).then(loe);
 	  }
-	  function loe(andmed){
+	  function loe(tekst){
+		  console.log(tekst);
+		  let andmed=JSON.parse(tekst);
 		  ilmaandmed=andmed;
 		  joonista();
 	  }
