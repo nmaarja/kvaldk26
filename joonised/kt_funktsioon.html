@@ -1,13 +1,24 @@
+
 <!doctype html>
 <html>
 <head>
     <title>Minu väike linn</title>
 
     <script>
+        let g;
 
+        // Linna objektide andmed
+        let objektid = [
+            ["maja", 30, 220, 0.6],
+            ["maja", 145, 220, 1],
+            ["maja", 280, 220, 1.5],
+            ["puu", 100, 220, 0.8],
+            ["puu", 245, 220, 1],
+            ["puu", 440, 220, 1.2]
+        ];
+
+        // Maja joonistamine
         function joonistaMaja(x, y, suurus) {
-            let g = tahvel.getContext("2d");
-
             g.beginPath();
             g.moveTo(x, y);
             g.lineTo(x, y - 100 * suurus);
@@ -17,7 +28,7 @@
             g.lineTo(x, y);
             g.stroke();
 
-            // UKS
+            // Uks
             g.beginPath();
             g.moveTo(x + 35 * suurus, y);
             g.lineTo(x + 35 * suurus, y - 50 * suurus);
@@ -25,39 +36,47 @@
             g.lineTo(x + 55 * suurus, y);
             g.stroke();
         }
-       
-function joonistaPuu(x, y, suurus) {
-    let g = tahvel.getContext("2d");
 
-    g.beginPath();
-    g.arc(x, y - 65 * suurus, 25 * suurus, 0, 2 * Math.PI);
-    g.stroke();
+        // Puu joonistamine
+        function joonistaPuu(x, y, suurus) {
+            g.beginPath();
+            g.arc(x, y - 65 * suurus, 25 * suurus, 0, 2 * Math.PI);
+            g.stroke();
 
-    // tüvi
-    g.beginPath();
-    g.moveTo(x - 7 * suurus, y - 40 * suurus);
-    g.lineTo(x - 7 * suurus, y);
-    g.lineTo(x + 7 * suurus, y);
-    g.lineTo(x + 7 * suurus, y - 40 * suurus);
-    g.stroke();
-}
+            // Tüvi
+            g.beginPath();
+            g.moveTo(x - 7 * suurus, y - 40 * suurus);
+            g.lineTo(x - 7 * suurus, y);
+            g.lineTo(x + 7 * suurus, y);
+            g.lineTo(x + 7 * suurus, y - 40 * suurus);
+            g.stroke();
+        }
 
+        // Joonistamine andmete põhjal
         function joonista() {
-            let g = tahvel.getContext("2d");
+            g = tahvel.getContext("2d");
 
+            g.clearRect(0, 0, 500, 300);
             g.lineWidth = 2;
             g.strokeStyle = "black";
 
-            // KOLM MAJA
-            joonistaMaja(30, 220, 0.6);
-            joonistaMaja(145, 220, 1);
-            joonistaMaja(280, 220, 1.5);
+            for (let i = 0; i < objektid.length; i++) {
+                let d = objektid[i];
 
-            joonistaPuu(100, 220, 0.8);
-            joonistaPuu(245, 220, 1);
-            joonistaPuu(440, 220, 1.2);
+                let tyyp = d[0];
+                let x = d[1];
+                let y = d[2];
+                let suurus = d[3];
+
+                if (tyyp == "maja") {
+                    joonistaMaja(x, y, suurus);
+                }
+
+                if (tyyp == "puu") {
+                    joonistaPuu(x, y, suurus);
+                }
+            }
         }
-
     </script>
 </head>
 
