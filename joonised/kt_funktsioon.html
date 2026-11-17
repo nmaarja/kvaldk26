@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Väike linn</title>
-
+   
     <script>
         let g;
 
@@ -17,39 +17,79 @@
         let paringuLoendur = 0;
 
         // Maja joonistamine
-        function joonistaMaja(x, y, suurus) {
-            g.beginPath();
-            g.moveTo(x, y);
-            g.lineTo(x, y - 100 * suurus);
-            g.lineTo(x + 40 * suurus, y - 150 * suurus);
-            g.lineTo(x + 80 * suurus, y - 100 * suurus);
-            g.lineTo(x + 80 * suurus, y);
-            g.lineTo(x, y);
-            g.stroke();
+        
+function joonistaMaja(x, y, suurus) {
+    // Maja seinad
+    g.fillStyle = "#F2C078";
+    g.strokeStyle = "black";
+    g.lineWidth = 2;
 
-            // Uks
-            g.beginPath();
-            g.moveTo(x + 35 * suurus, y);
-            g.lineTo(x + 35 * suurus, y - 50 * suurus);
-            g.lineTo(x + 55 * suurus, y - 50 * suurus);
-            g.lineTo(x + 55 * suurus, y);
-            g.stroke();
-        }
+    g.beginPath();
+    g.moveTo(x, y);
+    g.lineTo(x, y - 100 * suurus);
+    g.lineTo(x + 40 * suurus, y - 150 * suurus);
+    g.lineTo(x + 80 * suurus, y - 100 * suurus);
+    g.lineTo(x + 80 * suurus, y);
+    g.closePath();
+    g.fill();
+    g.stroke();
+
+    // Katus
+    g.fillStyle = "#A94438";
+    g.beginPath();
+    g.moveTo(x - 5 * suurus, y - 100 * suurus);
+    g.lineTo(x + 40 * suurus, y - 155 * suurus);
+    g.lineTo(x + 85 * suurus, y - 100 * suurus);
+    g.closePath();
+    g.fill();
+    g.stroke();
+
+    // Uks
+    g.fillStyle = "#795548";
+    g.fillRect(
+        x + 35 * suurus,
+        y - 50 * suurus,
+        20 * suurus,
+        50 * suurus
+    );
+    g.strokeRect(
+        x + 35 * suurus,
+        y - 50 * suurus,
+        20 * suurus,
+        50 * suurus
+    );
+}
+
 
         // Puu joonistamine
-        function joonistaPuu(x, y, suurus) {
-            g.beginPath();
-            g.arc(x, y - 65 * suurus, 25 * suurus, 0, 2 * Math.PI);
-            g.stroke();
+        
+function joonistaPuu(x, y, suurus) {
+    // Puu võra
+    g.fillStyle = "#4F8A45";
+    g.strokeStyle = "black";
+    g.lineWidth = 2;
 
-            // Tüvi
-            g.beginPath();
-            g.moveTo(x - 7 * suurus, y - 40 * suurus);
-            g.lineTo(x - 7 * suurus, y);
-            g.lineTo(x + 7 * suurus, y);
-            g.lineTo(x + 7 * suurus, y - 40 * suurus);
-            g.stroke();
-        }
+    g.beginPath();
+    g.arc(x, y - 65 * suurus, 25 * suurus, 0, 2 * Math.PI);
+    g.fill();
+    g.stroke();
+
+    // Puu tüvi
+    g.fillStyle = "#795548";
+    g.fillRect(
+        x - 7 * suurus,
+        y - 40 * suurus,
+        14 * suurus,
+        40 * suurus
+    );
+    g.strokeRect(
+        x - 7 * suurus,
+        y - 40 * suurus,
+        14 * suurus,
+        40 * suurus
+    );
+}
+
 
         // Objektide joonistamine
         function joonista() {
@@ -114,19 +154,16 @@
         }
 
         // Andmete laadimine Google Sheetsist
-        function laeAndmed() {
-            document.getElementById("teade").textContent =
-                "Laen andmeid Google Sheetsist...";
+        function laeAndmed() { 
+            document.getElementById("teade").textContent ="Laen andmeid ...";
 
             saadaPäring({}, function(andmed) {
-                // Jätame esimese rea ehk päised vahele
                 objektid = andmed.slice(1);
-
                 looTabel();
                 joonista();
 
                 document.getElementById("teade").textContent =
-                    "Andmed laaditud Google Sheetsist!";
+                    "Andmed laetud!";
             });
         }
 
