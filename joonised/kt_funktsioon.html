@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    <title>Minu väike linn</title>
+
+    <script>
+
+        function joonistaMaja(x, y, suurus) {
+            let g = tahvel.getContext("2d");
+
+            g.beginPath();
+            g.moveTo(x, y);
+            g.lineTo(x, y - 100 * suurus);
+            g.lineTo(x + 40 * suurus, y - 150 * suurus);
+            g.lineTo(x + 80 * suurus, y - 100 * suurus);
+            g.lineTo(x + 80 * suurus, y);
+            g.lineTo(x, y);
+            g.stroke();
+
+            // UKS
+            g.beginPath();
+            g.moveTo(x + 35 * suurus, y);
+            g.lineTo(x + 35 * suurus, y - 50 * suurus);
+            g.lineTo(x + 55 * suurus, y - 50 * suurus);
+            g.lineTo(x + 55 * suurus, y);
+            g.stroke();
+        }
+
+        function joonista() {
+            let g = tahvel.getContext("2d");
+
+            g.lineWidth = 2;
+            g.strokeStyle = "black";
+
+            // KOLM MAJA
+            joonistaMaja(30, 220, 0.6);
+            joonistaMaja(145, 220, 1);
+            joonistaMaja(280, 220, 1.5);
+        }
+
+    </script>
+</head>
+
+<body onload="joonista()">
+
+    <h1>Väike linn</h1>
+
+    <canvas id="tahvel" width="500" height="300"></canvas>
+
+</body>
+</html>
