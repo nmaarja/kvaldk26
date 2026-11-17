@@ -137,14 +137,6 @@
 
             script.src = aadress;
 
-            script.onerror = function() {
-                delete window[nimi];
-                script.remove();
-
-                document.getElementById("teade").textContent =
-                    "Andmete laadimine ebaõnnestus. Kontrolli ühendust ja Apps Scripti avaldamist.";
-            };
-
             document.body.appendChild(script);
         }
 
@@ -189,11 +181,7 @@
                 !Number.isFinite(y) ||
                 !Number.isFinite(suurus) ||
                 suurus <= 0
-            ) {
-                document.getElementById("teade").textContent =
-                    "Palun sisesta sobivad arvud ja positiivne suurus!";
-                return;
-            }
+            ) 
 
             document.getElementById("teade").textContent =
                 "Salvestan uut objekti...";
@@ -208,9 +196,6 @@
 
                 looTabel();
                 joonista();
-
-                document.getElementById("teade").textContent =
-                    "Uus objekt lisati Google Sheetsi!";
             });
         }
 
