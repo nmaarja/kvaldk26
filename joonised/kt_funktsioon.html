@@ -4,21 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Väike linn</title>
-   
     <script>
-        let g;
-
-        // Google Apps Scripti veebiaadress
+        let g
+       
         let url = "https://script.google.com/macros/s/AKfycbzR6A6chfGgWijrpihr3dtHcB-Nm2IYy_nsdREptViNJPZbvMSsksKLhwTfaOJU7sbo0g/exec";
-
         // Linna objektide andmed
         let objektid = [];
-
         let paringuLoendur = 0;
 
         // Maja joonistamine
         
-function joonistaMaja(x, y, suurus) {
+    function joonistaMaja(x, y, suurus) {
     // Maja seinad
     g.fillStyle = "#F2C078";
     g.strokeStyle = "black";
@@ -62,8 +58,7 @@ function joonistaMaja(x, y, suurus) {
 
 
         // Puu joonistamine
-        
-function joonistaPuu(x, y, suurus) {
+        function joonistaPuu(x, y, suurus) {
     // Puu võra
     g.fillStyle = "#4F8A45";
     g.strokeStyle = "black";
