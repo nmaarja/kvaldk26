@@ -6,6 +6,7 @@
 
     <script>
         let g;
+		let url = "https://script.google.com/macros/s/AKfycbxnM0hDmBksP0InKxntm932pY1DMYaz7iwAGslY2PbVSYO8lIDOq_zG9YiI39pWWEzQLw/exec";
 
         // Linna objektide andmed
         let objektid = [
@@ -127,9 +128,14 @@
             looTabel();
             joonista();
         }
-        function uuendaAndmed(){
-		  fetch("https://script.google.com/macros/s/AKfycbxnM0hDmBksP0InKxntm932pY1DMYaz7iwAGslY2PbVSYO8lIDOq_zG9YiI39pWWEzQLw/exec").then(d => d.json()).then(loe);
-	 	  }
+		function laeAndmed() {
+    fetch(url).then(d => d.json()).then(andmed => {
+            objektid = andmed;
+            looTabel();
+            joonista();
+        });
+	}
+        
 
         // Lehe käivitamine
         function alusta() {
