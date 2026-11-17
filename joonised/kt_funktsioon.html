@@ -25,6 +25,22 @@
             g.lineTo(x + 55 * suurus, y);
             g.stroke();
         }
+       
+function joonistaPuu(x, y, suurus) {
+    let g = tahvel.getContext("2d");
+
+    g.beginPath();
+    g.arc(x, y - 65 * suurus, 25 * suurus, 0, 2 * Math.PI);
+    g.stroke();
+
+    // tüvi
+    g.beginPath();
+    g.moveTo(x - 7 * suurus, y - 40 * suurus);
+    g.lineTo(x - 7 * suurus, y);
+    g.lineTo(x + 7 * suurus, y);
+    g.lineTo(x + 7 * suurus, y - 40 * suurus);
+    g.stroke();
+}
 
         function joonista() {
             let g = tahvel.getContext("2d");
@@ -36,6 +52,10 @@
             joonistaMaja(30, 220, 0.6);
             joonistaMaja(145, 220, 1);
             joonistaMaja(280, 220, 1.5);
+
+            joonistaPuu(100, 220, 0.8);
+            joonistaPuu(245, 220, 1);
+            joonistaPuu(440, 220, 1.2);
         }
 
     </script>
