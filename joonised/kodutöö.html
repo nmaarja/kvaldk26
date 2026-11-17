@@ -6,58 +6,20 @@
 	  function joonista(){
 	    let g=tahvel.getContext("2d");
 		 g.fillStyle="black";
-// VÄIKE MAJA
-g.beginPath();
-g.moveTo(30, 220);
-g.lineTo(30, 170);
-g.lineTo(50, 145);
-g.lineTo(70, 170);
-g.lineTo(70, 220);
-g.lineTo(30, 220);
-g.stroke();
-
-// Väikese maja uks
-g.beginPath();
-g.moveTo(45, 220);
-g.lineTo(45, 195);
-g.lineTo(55, 195);
-g.lineTo(55, 220);
-g.stroke();
-
-
-// KESKMINE MAJA
-g.beginPath();
-g.moveTo(110, 220);
-g.lineTo(110, 130);
-g.lineTo(145, 85);
-g.lineTo(180, 130);
-g.lineTo(180, 220);
-g.lineTo(110, 220);
-g.stroke();
-
-// Keskmise maja uks
-g.beginPath();
-g.moveTo(140, 220);
-g.lineTo(140, 175);
-g.lineTo(155, 175);
-g.lineTo(155, 220);
-g.stroke();
-
-
-// SUUR MAJA
-g.beginPath();
-g.moveTo(220, 220);
-g.lineTo(220, 110);
-g.lineTo(270, 50);
-g.lineTo(320, 110);
-g.lineTo(320, 220);
-g.lineTo(220, 220);
-g.stroke();
-
-// Suure maja uks
-g.beginPath();
-g.moveTo(260, 220);
-g.lineTo(260, 160);
-g.lineTo(280, 160);
-g.lineTo(280, 220);
-g.stroke();
+		g.fillRect(10, 10, 50, 20);
+	    g.fillStyle="green";
+		g.fillText("abc", 100, 10);
+		g.beginPath();
+        g.moveTo(10, 150);
+		g.lineTo(50, 100);
+		g.lineTo(90, 150);
+	    g.stroke();
+	  }
+	</script>
+  </head>
+  <body onload="joonista()">
+    <h1>Joonistamine</h1>
+	<canvas id="tahvel" width="400" height="300">
+	</canvas>
+  </body>
+</html>
