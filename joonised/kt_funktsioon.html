@@ -2,16 +2,19 @@
 <!doctype html>
 <html>
 <head>
-    <title>Minu väike linn</title>
+    <meta charset="UTF-8">
+    <title>Väike linn</title>
 
     <script>
         let g;
 
         // Google Apps Scripti veebiaadress
-        let url = "https://script.google.com/macros/s/AKfycbzNGjvsY22o4os_F40H2ZRqXJnnEAt0VIz6tNussJBT18ZlSlbkRnyGXqYXHVW3iO_GZw/exec";
+        let url = "https://script.google.com/macros/s/AKfycbzR6A6chfGgWijrpihr3dtHcB-Nm2IYy_nsdREptViNJPZbvMSsksKLhwTfaOJU7sbo0g/exec";
 
         // Linna objektide andmed
         let objektid = [];
+
+        let paringuLoendur = 0;
 
         // Maja joonistamine
         function joonistaMaja(x, y, suurus) {
@@ -48,7 +51,7 @@
             g.stroke();
         }
 
-        // Joonistamine andmete põhjal
+        // Objektide joonistamine
         function joonista() {
             let tahvel = document.getElementById("tahvel");
             g = tahvel.getContext("2d");
@@ -75,20 +78,13 @@
             }
         }
 
-        // Andmete pärimine Google Sheetsist
-        function laeAndmed() {
-            saadaPäring({}, function(andmed) {
-                objektid = andmed;
-                looTabel();
-                joonista();
-                document.getElementById("teade").textContent =
-                    "Andmed laaditud Google Sheetsist!";
-            });
-        }
-
-        // Päringu saatmine Apps Scriptile JSONP abil
+        // Päringu saatmine Google Apps Scriptile
         function saadaPäring(parameetrid, tegevus) {
-            let nimi = "sheetCallback";
+            paringuLoendur++;
+
+            let nimi = "sheetCallback" + paringuLoendur;
+
+            let script = document.createElement("script");
 
             window[nimi] = function(vastus) {
                 delete window[nimi];
@@ -104,17 +100,34 @@
                     + "=" + encodeURIComponent(parameetrid[võti]);
             }
 
-            let script = document.createElement("script");
             script.src = aadress;
 
             script.onerror = function() {
-                document.getElementById("teade").textContent =
-                    "Andmete laadimine ebaõnnestus. Kontrolli URL-i ja ühendust.";
                 delete window[nimi];
                 script.remove();
+
+                document.getElementById("teade").textContent =
+                    "Andmete laadimine ebaõnnestus. Kontrolli ühendust ja Apps Scripti avaldamist.";
             };
 
             document.body.appendChild(script);
+        }
+
+        // Andmete laadimine Google Sheetsist
+        function laeAndmed() {
+            document.getElementById("teade").textContent =
+                "Laen andmeid Google Sheetsist...";
+
+            saadaPäring({}, function(andmed) {
+                // Jätame esimese rea ehk päised vahele
+                objektid = andmed.slice(1);
+
+                looTabel();
+                joonista();
+
+                document.getElementById("teade").textContent =
+                    "Andmed laaditud Google Sheetsist!";
+            });
         }
 
         // Tabeli loomine
@@ -139,11 +152,12 @@
             let y = Number(document.getElementById("y").value);
             let suurus = Number(document.getElementById("suurus").value);
 
-            if (!Number.isFinite(x) ||
+            if (
+                !Number.isFinite(x) ||
                 !Number.isFinite(y) ||
                 !Number.isFinite(suurus) ||
-                suurus <= 0) {
-
+                suurus <= 0
+            ) {
                 document.getElementById("teade").textContent =
                     "Palun sisesta sobivad arvud ja positiivne suurus!";
                 return;
@@ -153,25 +167,26 @@
                 "Salvestan uut objekti...";
 
             saadaPäring({
-                action: "add",
                 tyyp: tyyp,
                 x: x,
                 y: y,
                 suurus: suurus
-            }, function(vastus) {
-                if (vastus.status == "ok") {
-                    laeAndmed();
-                } else {
-                    document.getElementById("teade").textContent =
-                        "Objekti salvestamine ebaõnnestus.";
-                }
+            }, function(andmed) {
+                objektid = andmed.slice(1);
+
+                looTabel();
+                joonista();
+
+                document.getElementById("teade").textContent =
+                    "Uus objekt lisati Google Sheetsi!";
             });
         }
 
-        // Lehe käivitamine
+        // Veebilehe käivitamine
         function alusta() {
             laeAndmed();
         }
+
     </script>
 </head>
 
@@ -198,8 +213,6 @@
     <button onclick="lisaObjekt()">Lisa objekt</button>
 
     <p id="teade">Laen andmeid...</p>
-
-    <br>
 
     <canvas id="tahvel" width="600" height="500"></canvas>
 
