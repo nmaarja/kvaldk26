@@ -84,7 +84,24 @@
 
     <h1>Väike linn</h1>
 
-    <canvas id="tahvel" width="600" height="300"></canvas>
+<h3>Lisa linna uus objekt</h3>
 
-</body>
-</html>
+<select id="tyyp">
+    <option value="maja">Maja</option>
+    <option value="puu">Puu</option>
+</select>
+
+<label>X asukoht:</label>
+<input type="number" id="x" value="200">
+
+<label>Y asukoht:</label>
+<input type="number" id="y" value="220">
+
+<label>Suurus:</label>
+<input type="number" id="suurus" value="1" step="0.1">
+
+<button onclick="lisaObjekt()">Lisa objekt</button>
+
+<br><br>
+
+<canvas id="tahvel" width="600" height="300"></canvas>
