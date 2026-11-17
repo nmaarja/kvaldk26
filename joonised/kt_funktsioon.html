@@ -77,6 +77,16 @@
                 }
             }
         }
+        function lisaObjekt() {
+    let tyyp = document.getElementById("tyyp").value;
+    let x = Number(document.getElementById("x").value);
+    let y = Number(document.getElementById("y").value);
+    let suurus = Number(document.getElementById("suurus").value);
+
+    objektid.push([tyyp, x, y, suurus]);
+
+    joonista();
+}
     </script>
 </head>
 
