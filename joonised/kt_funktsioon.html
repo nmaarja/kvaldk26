@@ -54,9 +54,10 @@
 
         // Joonistamine andmete põhjal
         function joonista() {
+            let tahvel = document.getElementById("tahvel");
             g = tahvel.getContext("2d");
 
-            g.clearRect(0, 0, 500, 300);
+            g.clearRect(0, 0, tahvel.width, tahvel.height);
             g.lineWidth = 2;
             g.strokeStyle = "black";
 
@@ -77,41 +78,105 @@
                 }
             }
         }
+
+        // Tabeli loomine
+        function looTabel() {
+            let tabel = document.getElementById("andmetabel");
+            tabel.innerHTML = "";
+
+            for (let d of objektid) {
+                let rida = tabel.insertRow();
+
+                for (let väärtus of d) {
+                    let lahter = rida.insertCell();
+                    lahter.textContent = väärtus;
+                    lahter.contentEditable = true;
+                }
+            }
+        }
+
+        // Tabelist andmete lugemine
+        function loeTabelist() {
+            let read = document.querySelectorAll("#andmetabel tr");
+
+            objektid = [];
+
+            for (let rida of read) {
+                let lahtrid = rida.querySelectorAll("td");
+
+                let tyyp = lahtrid[0].textContent.trim();
+                let x = Number(lahtrid[1].textContent);
+                let y = Number(lahtrid[2].textContent);
+                let suurus = Number(lahtrid[3].textContent);
+
+                objektid.push([tyyp, x, y, suurus]);
+            }
+
+            joonista();
+        }
+
+        // Uue objekti lisamine
         function lisaObjekt() {
-    let tyyp = document.getElementById("tyyp").value;
-    let x = Number(document.getElementById("x").value);
-    let y = Number(document.getElementById("y").value);
-    let suurus = Number(document.getElementById("suurus").value);
+            let tyyp = document.getElementById("tyyp").value;
+            let x = Number(document.getElementById("x").value);
+            let y = Number(document.getElementById("y").value);
+            let suurus = Number(document.getElementById("suurus").value);
 
-    objektid.push([tyyp, x, y, suurus]);
+            objektid.push([tyyp, x, y, suurus]);
 
-    joonista();
-}
+            looTabel();
+            joonista();
+        }
+
+        // Lehe käivitamine
+        function alusta() {
+            looTabel();
+            joonista();
+        }
     </script>
 </head>
 
-<body onload="joonista()">
+<body onload="alusta()">
 
-    <h1>Väike linn</h1>
+    <h1>Minu väike linn</h1>
 
-<h3>Lisa linna uus objekt</h3>
+    <h3>Lisa linna uus objekt</h3>
 
-<select id="tyyp">
-    <option value="maja">Maja</option>
-    <option value="puu">Puu</option>
-</select>
+    <select id="tyyp">
+        <option value="maja">Maja</option>
+        <option value="puu">Puu</option>
+    </select>
 
-<label>X asukoht:</label>
-<input type="number" id="x" value="200">
+    <label>X asukoht:</label>
+    <input type="number" id="x" value="200">
 
-<label>Y asukoht:</label>
-<input type="number" id="y" value="220">
+    <label>Y asukoht:</label>
+    <input type="number" id="y" value="220">
 
-<label>Suurus:</label>
-<input type="number" id="suurus" value="1" step="0.1">
+    <label>Suurus:</label>
+    <input type="number" id="suurus" value="1" step="0.1">
 
-<button onclick="lisaObjekt()">Lisa objekt</button>
+    <button onclick="lisaObjekt()">Lisa objekt</button>
 
-<br><br>
+    <br><br>
 
-<canvas id="tahvel" width="600" height="500"></canvas>
+    <canvas id="tahvel" width="600" height="500"></canvas>
+
+    <h3>Linna objektide andmetabel</h3>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Tüüp</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Suurus</th>
+            </tr>
+        </thead>
+
+        <tbody id="andmetabel" oninput="loeTabelist()">
+        </tbody>
+    </table>
+
+</body>
+</html>
