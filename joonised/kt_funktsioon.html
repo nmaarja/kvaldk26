@@ -18,11 +18,11 @@
     g.lineWidth = 2;
 
     g.beginPath(); // alustab uue kujundi joonist
-    g.moveTo(x, y);
-    g.lineTo(x, y - 100 * suurus);
-    g.lineTo(x + 40 * suurus, y - 150 * suurus);
-    g.lineTo(x + 80 * suurus, y - 100 * suurus);
-    g.lineTo(x + 80 * suurus, y);
+    g.moveTo(x, y); // (200, 220) Vasak alumine nurk
+    g.lineTo(x, y - 100 * suurus); // Vasak ülemine nurk
+    g.lineTo(x + 40 * suurus, y - 150 * suurus); // Maja katusealune tipp
+    g.lineTo(x + 80 * suurus, y - 100 * suurus); // Parem ülemine nurk
+    g.lineTo(x + 80 * suurus, y); // Vasak ülemine nurk
     g.closePath();
     g.fill();
     g.stroke();
@@ -40,10 +40,10 @@
     // Uks
     g.fillStyle = "#795548";
     g.fillRect(
-        x + 35 * suurus,
-        y - 50 * suurus,
-        20 * suurus,
-        50 * suurus
+        x + 35 * suurus, // Ukse kaugus vasakust servast
+        y - 50 * suurus, // Ukse ülemine asukoht
+        20 * suurus, // Ukse laius
+        50 * suurus // Ukse kõrgus
     );
     g.strokeRect(
         x + 35 * suurus,
