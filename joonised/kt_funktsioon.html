@@ -173,9 +173,9 @@
     </script>
 </head>
     
-// veebilehe tööprotsess
+    
 <body onload="alusta()">
-<p id="teade">Laen andmeid...</p>
+
     <h1>Väike linn</h1>
 
     <h3>Lisa linna uus objekt</h3>
@@ -191,14 +191,16 @@
     <label>Y asukoht:</label>
     <input type="number" id="y" value="220">
 
-    <label>Suurus:</label>
-    <input type="number" id="suurus" value="1" step="0.1">
+  <label>Suurus:</label>
+<input type="number" id="suurus" value="1" step="0.1">
 
-    <button onclick="lisaObjekt()">Lisa objekt</button>
+<button onclick="lisaObjekt()">Lisa objekt</button>
 
-    <canvas id="tahvel" width="600" height="500"></canvas>
+<p id="teade">Laen andmeid...</p>
 
-    <h3>Linna objektide andmetabel</h3>
+<canvas id="tahvel" width="600" height="500"></canvas>
+
+<h3>Linna objektide andmetabel</h3>
 
     <table border="1">
         <thead>
