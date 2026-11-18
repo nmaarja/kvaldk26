@@ -120,11 +120,13 @@
 
         // andmed sheetsist
         function laeAndmed() { 
+            document.getElementById("teade").textContent = "Laen andmeid...";
             saadaPäring({}, function(andmed) {
                 objektid = andmed.slice(1);
                 looTabel();
                 joonista();
-               
+
+            document.getElementById("teade").textContent = "Andmed on laetud!";
             });
         }
 
@@ -170,9 +172,10 @@
 
     </script>
 </head>
+    
 // veebilehe tööprotsess
 <body onload="alusta()">
-
+<p id="teade">Laen andmeid...</p>
     <h1>Väike linn</h1>
 
     <h3>Lisa linna uus objekt</h3>
